@@ -229,10 +229,18 @@ namespace :deploy do
 
       system %[echo "-----> RSyncing remote assets (tmp/assets) \
                      with local assets (#{precompiled_assets_dir})"]
-
-      system %(rsync #{rsync_verbose} -e 'ssh -p #{ssh_port}' \
+      system %(rsync #{rsync_verbose} -e 'ssh -p #{ssh_port} #{identity_file ? '-i ' << identity_file : ""}' \
                  --recursive --times --delete ./#{precompiled_assets_dir}/. \
                  #{user}@#{domain}:#{deploy_to}/tmp/assets)
+    end
+
+    def ssh_command
+      args = "#{rsync_verbose} -e 'ssh -p #{ssh_port}' \
+              --recursive --times --delete ./#{precompiled_assets_dir}/. \
+              #{user}@#{domain}:#{deploy_to}/tmp/assets"
+      arts =
+
+      "ssh #{args}"
     end
 
     task :copy_tmp_to_current do
