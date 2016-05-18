@@ -34,7 +34,20 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
+  # gem 'byebug'
+  
+  # Server-related tasks (such as deploy)
+  gem 'mina', '~> 0.3.8', require: false
+
+  # Mina for multiple servers
+  gem 'mina-multistage', '~> 1.0.2', require: false
+
+  # Debugging: write 'binding.pry' in Ruby code to debug in terminal
+  gem 'pry-byebug', '~> 3.1.0'
+
+  # Ruby code style
+  gem 'rubocop', '~> 0.35.0'
+
 end
 
 group :development do
@@ -47,5 +60,4 @@ end
 
 gem 'pg'
 gem 'puma'
-gem 'mina'
-
+gem 'dotenv-rails'
