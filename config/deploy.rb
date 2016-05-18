@@ -85,6 +85,15 @@ set :shared_env_path, -> { "#{full_shared_path}/.env" }
 # Fetch Head location: this file contains the currently deployed git commit hash
 set :fetch_head, -> { "#{deploy_to}/scm/FETCH_HEAD" }
 
+task :environment do
+  # If you're using rbenv, use this to load the rbenv environment.
+  # Be sure to commit your .ruby-version or .rbenv-version to your repository.
+  # invoke :'rbenv:load'
+
+  # For those using RVM, use this to load an RVM version@gemset.
+  # invoke :'rvm:use[ruby-1.9.3-p125@default]'
+end
+
 namespace :rails do
   desc "Opens the deployed application's .env file in vim for editing"
   task :edit_env do
@@ -234,15 +243,6 @@ namespace :deploy do
                  #{user}@#{domain}:#{deploy_to}/tmp/assets)
     end
 
-    def ssh_command
-      args = "#{rsync_verbose} -e 'ssh -p #{ssh_port}' \
-              --recursive --times --delete ./#{precompiled_assets_dir}/. \
-              #{user}@#{domain}:#{deploy_to}/tmp/assets"
-      arts =
-
-      "ssh #{args}"
-    end
-
     task :copy_tmp_to_current do
       queue %(echo "-----> Copying assets from \
                     tmp/assets to current/#{precompiled_assets_dir}")
@@ -269,7 +269,7 @@ task setup: :environment do
   end
 
   unless env_exists
-    system %(scp -P #{ssh_port} .env.example \
+    system %(scp -P #{ssh_port} #{identity_file ? '-i ' << identity_file : ""} .env.example \
                #{user}@#{domain}:#{temp_env_example_path})
   end
 
@@ -411,7 +411,7 @@ end
 private
 
 def sudo_ssh_cmd(task)
-  "ssh #{get_sudo_user(task)}@#{domain} -t -p #{ssh_port}"
+  "ssh #{get_sudo_user(task)}@#{domain} -t -p #{ssh_port} #{identity_file ? '-i ' << identity_file : ""}"
 end
 
 def get_sudo_user(task)
