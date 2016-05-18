@@ -75,6 +75,9 @@ set_default :use_ssl, false
 set :ssl_key, -> { "/etc/sslmate/#{web_url}.key" }
 set :ssl_cert, -> { "/etc/sslmate/#{web_url}.chained.crt" }
 
+# Assets settings
+set :precompiled_assets_dir, 'public/assets'
+
 # Rails settings
 set :temp_env_example_path, -> { "#{user_path}/.env.example-#{application}" }
 set :shared_env_path, -> { "#{full_shared_path}/.env" }
