@@ -1,5 +1,6 @@
-set :domain, 'alpha.jumpstart.ge'
-set :user, 'prisoners-staging'
-set :application, 'Starter-Template-Production'
-set :repository, 'git@github.com:JumpStartGeorgia/Starter-Template.git'
+set :domain, 'production.minahost.com'
+set :user, 'vagrant'
+set :application, 'production_minapumarails'
+set :repository, 'git@github.com:thecantero/minapumarails.git'
 set :web_url, ENV['PRODUCTION_WEB_URL']
+set :visible_to_robots, false
