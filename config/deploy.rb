@@ -88,7 +88,7 @@ set :fetch_head, -> { "#{deploy_to}/scm/FETCH_HEAD" }
 task :environment do
   # If you're using rbenv, use this to load the rbenv environment.
   # Be sure to commit your .ruby-version or .rbenv-version to your repository.
-  # invoke :'rbenv:load'
+  invoke :'rbenv:load'
 
   # For those using RVM, use this to load an RVM version@gemset.
   # invoke :'rvm:use[ruby-1.9.3-p125@default]'
@@ -320,6 +320,7 @@ task deploy: :environment do
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
+    invoke :'rails_db_create'
     invoke :'rails:db_migrate'
     invoke :'deploy:assets:copy_tmp_to_current'
     invoke :'nginx:generate_conf'
